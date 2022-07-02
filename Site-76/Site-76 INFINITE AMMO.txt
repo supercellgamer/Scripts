@@ -1,0 +1,7 @@
+for a,b in pairs(getgc(true)) do
+if typeof(b) == "table" and rawget(b,"Ammo") then
+game:GetService("RunService").Stepped:Connect(function()
+b.Ammo = math.huge
+end)
+end
+end

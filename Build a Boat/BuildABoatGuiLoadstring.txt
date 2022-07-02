@@ -1,0 +1,1 @@
+loadstring(gameHttpGet(('https://raw.githubusercontent.com/supercellgamer/BuildABoatGUI/main/Obfuscated%20BuildABoatGui.lua')))()

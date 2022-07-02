@@ -1,0 +1,103 @@
+-- Blacklist Items
+blacklist = {
+    "Wrench",
+    "Frying Pan",
+    "Flashlight",
+    "L1Keycard",
+    "L2Keycard",
+    "Sledgehammer",
+    "Knife",
+    "Fireaxe",
+    "Cleaver"
+}
+
+-- Variable
+local items = workspace.Ign
+
+-- ESP Holder
+local Holder = Instance.new("Folder")
+Holder.Name = "egg esp"
+
+-- Keycard Color Comparison
+function keyColor(k)
+    for i,v in pairs(game.ReplicatedStorage.Models:GetChildren()) do
+        if v.Name:find("Keycard") and not table.find(blacklist, v.Name) and v.Bottom.Color == k.Color then
+            return v.Name
+        end
+    end
+    return false
+end
+
+-- Create ESP
+function create(trink)
+    -- Chams
+    local box = Instance.new("BoxHandleAdornment")
+    box.Size = trink.Size
+    box.Name = "egg esp"
+    box.Adornee = trink
+    box.Color3 = trink.Color
+    box.AlwaysOnTop = true
+    box.ZIndex = 5
+    box.Transparency = .6
+    box.Parent = trink.Parent
+    -- Board
+    local name = Instance.new("BillboardGui")
+    name.Parent = box
+    name.Adornee = trink
+    name.AlwaysOnTop = true
+    name.ExtentsOffset = Vector3.new(0,1,0)
+    name.Size = UDim2.new(0,5,0,5)
+    name.StudsOffset = Vector3.new(0,3,0)
+    name.Name = "egg esp"
+    -- Frame
+    local frame = Instance.new("Frame")
+    frame.Parent = name
+    frame.ZIndex = 10
+    frame.BackgroundTransparency = 1
+    frame.Size = UDim2.new(1,0,1,0)
+    -- Text
+    local text = Instance.new("TextLabel")
+    text.Parent = frame
+    text.Name = "Names"
+    text.ZIndex = 10
+    if trink.Parent.Name == "KeycardModel" then
+        if not keyColor(trink) then
+            box:Destroy()
+            return
+        end
+        text.Text = keyColor(trink)
+    else 
+        text.Text = trink.Parent.Name
+    end
+    text.BackgroundTransparency = 1
+    text.Position = UDim2.new(0, 0, 0, -45)
+    text.Size = UDim2.new(1, 0, 10, 0)
+    text.TextColor3 = trink.Color
+    text.TextSize = 14
+    text.TextStrokeTransparency = .5
+end
+
+-- Credits | if you remove this you're un-epic
+loadstring(game:HttpGet("https://pastebin.com/raw/vJg6Sa8w", true))()
+
+-- Get Current Items
+local shit = items:GetChildren()
+for i = 1, #shit do local v = shit[i]
+    if not table.find(blacklist, v.Name) and v:IsA("Model") then
+        local gay = v:FindFirstChild("Interact") or v:FindFirstChild("Handle") or v:FindFirstChild("Bottom")
+    if typeof(gay) == "Instance" then
+        create(gay)
+    end
+end
+end
+
+-- Get Future Items
+items.ChildAdded:Connect(function(v)
+    wait(1)
+    if not table.find(blacklist, v.Name) and v:IsA("Model") then
+        local gay = v:FindFirstChild("Interact") or v:FindFirstChild("Handle") or v:FindFirstChild("Bottom")
+    if typeof(gay) == "Instance" then
+        create(gay)
+    end
+end
+end)
